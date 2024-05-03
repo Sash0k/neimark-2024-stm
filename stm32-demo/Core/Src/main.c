@@ -101,7 +101,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     cpp_code_entry_point();
-	printf(text);
+    HAL_UART_Transmit(&huart1, text, sizeof(text), 100);
     HAL_Delay(1000);
   }
   /* USER CODE END 3 */
