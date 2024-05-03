@@ -30,7 +30,9 @@
  */
 static uint8_t *__sbrk_heap_end = NULL;
 
-static atomic_uint sbrk_counter = 0;
+static atomic_int counter_sbrk = 0;
+static atomic_int counter_malloc = 0;
+static atomic_int counter_free = 0;
 
 /**
  * @brief _sbrk() allocates memory to the newlib heap and is used by malloc
@@ -62,7 +64,7 @@ void *_sbrk(ptrdiff_t incr)
   const uint8_t *max_heap = (uint8_t *)stack_limit;
   uint8_t *prev_heap_end;
   
-  sbrk_counter += 1;
+  counter_sbrk += 1;
 
   /* Initialize heap end at first call */
   if (NULL == __sbrk_heap_end)
@@ -83,6 +85,15 @@ void *_sbrk(ptrdiff_t incr)
   return (void *)prev_heap_end;
 }
 
-uint8_t get_sbrk_counter() {
-  return sbrk_counter;
+void* __real_malloc(size_t);
+void __real_free (void *);
+
+void* __wrap_malloc(size_t size) {
+  counter_malloc += 1;
+  return __real_malloc(size);
+}
+
+void __wrap_free(void *pv) {
+  counter_free += 1;
+  return __real_free(pv);
 }
