@@ -36,7 +36,6 @@
 /* Variables */
 extern int __io_putchar(int ch) __attribute__((weak));
 extern int __io_getchar(void) __attribute__((weak));
-extern UART_HandleTypeDef huart1;
 
 char *__env[1] = { 0 };
 char **environ = __env;
@@ -82,6 +81,7 @@ __attribute__((weak)) int _read(int file, char *ptr, int len)
 __attribute__((weak)) int _write(int file, char *ptr, int len)
 {
   (void)file; (void)ptr; (void)len;
+  extern UART_HandleTypeDef huart1;
   switch (file)
   {
       case STDOUT_FILENO: /* stdout */
