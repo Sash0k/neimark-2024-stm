@@ -8,6 +8,14 @@ extern "C"
 
 void cpp_code_entry_point();
 
+/**
+ * Возвращает значение внутреннего счётчика
+ *
+ * @param type 's' = sbrk, 'm' = malloc, 'f' = free
+ * @return значение счётчика или -1 при некорректном типе
+ */
+int get_counter(char type);
+
 #ifdef __cplusplus
 }
 #endif

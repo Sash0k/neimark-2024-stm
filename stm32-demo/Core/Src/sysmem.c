@@ -30,9 +30,9 @@
  */
 static uint8_t *__sbrk_heap_end = NULL;
 
-static atomic_int counter_sbrk = 0;
-static atomic_int counter_malloc = 0;
-static atomic_int counter_free = 0;
+static atomic_uint counter_sbrk = 0;
+static atomic_uint counter_malloc = 0;
+static atomic_uint counter_free = 0;
 
 /**
  * @brief _sbrk() allocates memory to the newlib heap and is used by malloc
@@ -96,4 +96,19 @@ void* __wrap_malloc(size_t size) {
 void __wrap_free(void *pv) {
   counter_free += 1;
   return __real_free(pv);
+}
+
+/**
+ * Возвращает значение внутреннего счётчика
+ *
+ * @param type 's' = sbrk, 'm' = malloc, 'f' = free
+ * @return значение счётчика или -1 при некорректном типе
+ */
+int get_counter(char type) {
+  switch (type) {
+    case 's': return counter_sbrk;
+    case 'm': return counter_malloc;
+    case 'f': return counter_free;
+    default: return -1;
+  }
 }

@@ -20,7 +20,7 @@ void function_to_investigate()
 void print_stat()
 {
     // Some code here should print statistic of _sbrk, malloc, free usage
-    HAL_UART_Transmit(&huart1, cpp_text, sizeof(cpp_text), 100);
+    printf("_sbrk = %d, malloc = %d, free = %d\r\n", get_counter('s'), get_counter('m'), get_counter('f'));
 }
 
 void cpp_code_entry_point()
